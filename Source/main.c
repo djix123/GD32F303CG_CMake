@@ -38,6 +38,7 @@ int _write(int fd, char *ch, int len)
         len -= toSend;
     }
 
+    return offset;
 }
 
 int main(void)
