@@ -78,6 +78,7 @@ int main(void)
 //    }
 
     uint32_t count = 0;
+    float f = 0.0f;
     while (1)
     {
         gpio_bit_write(LEDPORT, LEDPIN, SET);
@@ -85,8 +86,9 @@ int main(void)
         gpio_bit_write(LEDPORT, LEDPIN, RESET);
         delay_1ms(500);
 
-        printf("Loop ... %ld\r\n", count);
+        printf("Loop ... %ld: Loop/10 ... %f\r\n", count, f);
 
+        f = f + 0.1f;
         count++;
     }
 }

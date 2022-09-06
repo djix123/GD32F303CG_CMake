@@ -11,32 +11,34 @@ set(CMAKE_OBJDUMP arm-none-eabi-objdump)
 set(SIZE arm-none-eabi-size)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-project(CLionGD32F303CG C CXX ASM)
+project(CLionGD32F303CC C CXX ASM)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
 
 add_compile_options(-mcpu=cortex-m4 -mthumb -mthumb-interwork)
+add_compile_options(-mfloat-abi=hard -mfpu=fpv4-sp-d16)
 add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-length=0)
 
 add_compile_options($<$<COMPILE_LANGUAGE:ASM>:-x$<SEMICOLON>assembler-with-cpp>)
 
-add_compile_options(-Og -g)
+add_compile_options(-O0 -g)
 
 include_directories(Include Drivers/GD32F30x_standard_peripheral/Include Drivers/CMSIS/ Drivers/CMSIS/GD/GD32F30x/Include
         Drivers/GD32F30x_usbd_library/class/device/cdc/Include Drivers/GD32F30x_usbd_library/device/Include
         Drivers/GD32F30x_usbd_library/usbd/Include)
 
-add_definitions(-DDEBUG -DGD32F3 -DGD32F30x -DGD32F303 -DGD32F30X_XD)
+add_definitions(-DDEBUG -DGD32F3 -DGD32F30x -DGD32F303 -DGD32F30X_HD)
 
 file(GLOB_RECURSE SOURCES "Source/*.*" "Drivers/*.*")
 
-set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/GD32F303CG_DEFAULT.ld)
+set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/GD32F303CC_DEFAULT.ld)
 
 add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map)
 add_link_options(-mcpu=cortex-m4 -mthumb -mthumb-interwork)
 #add_link_options(-specs=nano.specs -lc -lgcc)
 #add_link_options(-lc -lgcc)
 add_link_options(-specs=nosys.specs)
+add_link_options(-mfloat-abi=hard -mfpu=fpv4-sp-d16)
 add_link_options(-T ${LINKER_SCRIPT})
 
 add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})
